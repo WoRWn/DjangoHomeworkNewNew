@@ -14,7 +14,7 @@ class Advertisement(models.Model):
     auction = models.BooleanField("торг", help_text="отметьте, если торг уместен")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    image = models.ImageField("изображение", upload_to='advertisements/')
+    image = models.ImageField("изображение", upload_to='advertisements/', null=True, blank=True)
 
     user = models.ForeignKey(User, verbose_name='пользователь', on_delete=models.CASCADE, null=True, default=None)
 
