@@ -19,7 +19,7 @@
 
   <ul class="nav nav-pills sticky-top bg-white nav-fill">
     <li class="nav-item">
-      <a class="nav-link" href="index.html">
+      <a class="nav-link" href="/">
         <span style="font-weight: bold;">Главная</span>
       </a>
     </li>
@@ -32,26 +32,29 @@
         <span style="font-weight: bold;">Разместить объявление</span>
       </a>
     </li>
+    {% if not user.is_authenticated %}
     <li class="nav-item">
-      <a class="nav-link" href="register.html">
+      <a class="nav-link" href="{% url 'register' %}">
         <span style="font-weight: bold;">Регистрация</span>
       </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link active" aria-current="page" href="login.html">
+      <a class="nav-link active" aria-current="page" href="{% url 'login' %}">
         <span style="font-weight: bold;">Войти</span>
       </a>
     </li>
+    {% else %}
     <li class="nav-item">
       <a class="nav-link" href="{% url 'profile' %}">
         <span style="font-weight: bold;">Профиль</span>
       </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#">
+      <a class="nav-link" href="{% url 'logout' %}">
         <span style="font-weight: bold;">Выйти</span>
       </a>
     </li>
+    {% endif %}
   </ul>
   <div class="row">
     <div class="col" style="font-weight: bold;">
@@ -75,20 +78,20 @@
       <div class="form-label bg-warning" style="margin: 10px 0px">{{ error }}</div>
     </div>
     {% endif %}
-    <form method="post">
+    <form method="post"> {% csrf_token %}
       <div class="row mb-3">
         <div class="col">
-          <label class="col-sm-4 col-form-label offset-4">Username</label>
+          <label class="col-sm-4 col-form-label offset-4" for="id_username">Username</label>
           <div class="col-sm-4 offset-4 w-25">
-            <input type="text" class="form-control form-control-lg">
+            <input type="text" class="form-control form-control-lg" name="username" id="id_username">
           </div>
         </div>
       </div>
       <div class="row mb-3">
         <div class="col">
-          <label class="col-sm-4 col-form-label offset-4">Password</label>
+          <label class="col-sm-4 col-form-label offset-4" for="id_password">Password</label>
           <div class="col-sm-4 offset-4 w-25">
-            <input type="password" class="form-control form-control-lg">
+            <input type="password" class="form-control form-control-lg" name="password" id="id_password">
           </div>
         </div>
       </div>
@@ -98,6 +101,7 @@
         </div>
       </div>
     </form>
+  </div>
   </div>
 {% endblock %}
   <script src="js/bootstrap.bundle.min.js"></script>

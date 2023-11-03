@@ -1,9 +1,29 @@
 from django.shortcuts import render, redirect, reverse
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.urls import reverse_lazy
+from .forms import RegistrationForm
 
 
+@login_required(login_url=reverse_lazy('login'))
 def profile_view(request):
     return render(request, 'app_auth/profile.html')
+
+
+def login_view(request):
+    return render(request, 'app_auth/login.html')
+
+
+def register_view(request):
+    if request.method == "POST":
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('profile')
+    else:
+        form = RegistrationForm()
+    return render(request, 'app_auth/register.html', {'form': form})
 
 
 def login_view(request):
@@ -22,4 +42,6 @@ def login_view(request):
     return render(request, 'app_auth/login.html', {"error": "Пользователь не найден"})
 
 
-
+def logout_view(request):
+    logout(request)
+    return redirect(reverse('login'))
